@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 外部应用密钥 -->
+<mapper namespace="fun.billon.auth.dao.IAuthOuterKeyDAO">
+
+    <!-- 新增外部应用密钥 -->
+    <insert id="insertAuthOuterKey" parameterType="fun.billon.auth.api.model.AuthOuterKeyModel">
+        INSERT INTO auth_outer_key(app_id, platform, `name`, app_secret, token_exp_time, refresh_token_exp_time)
+        VALUES (#{appId}, #{platform}, #{name}, #{appSecret}, #{tokenExpTime}, #{refreshTokenExpTime})
+    </insert>
+
+    <!-- 根据appId查询外部应用密钥 -->
+    <select id="queryAuthOuterKeyByPK" parameterType="fun.billon.auth.api.model.AuthOuterKeyModel"
+            resultMap="resultAuthOuterKey">
+        SELECT
+        <include refid="authOuterKeyMapping"/>
+        FROM auth_outer_key
+        <where>
+            delete_time IS NULL
+            AND app_id = #{appId}
+        </where>
+    </select>
+
+    <!-- 查询字段映射 begin-->
+    <!-- 外部应用密钥查询字段映射(auth_outer_key) -->
+    <sql id="authOuterKeyMapping">
+        app_id,platform,`name`,app_secret,token_exp_time,refresh_token_exp_time,create_time
+    </sql>
+    <!-- 查询字段映射 end-->
+
+    <!-- 查询结果映射begin -->
+    <!-- 外部应用密钥映射 -->
+    <resultMap id="resultAuthOuterKey" type="fun.billon.auth.api.model.AuthOuterKeyModel">
+        <id property="appId" column="app_id"/>
+        <result property="platform" column="platform"/>
+        <result property="name" column="name"/>
+        <result property="appSecret" column="app_secret"/>
+        <result property="tokenExpTime" column="token_exp_time"/>
+        <result property="refreshTokenExpTime" column="refresh_token_exp_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <!-- 查询结果映射end -->
+
+</mapper>

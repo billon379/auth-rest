@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 内部服务ip过滤规则 -->
+<mapper namespace="fun.billon.auth.dao.IAuthInnerRuleIpDAO">
+
+    <!-- 新增内部服务规则 -->
+    <insert id="insertAuthInnerRuleIp" parameterType="fun.billon.auth.api.model.AuthInnerRuleIpModel">
+        INSERT INTO auth_inner_rule_ip(sid, ip)
+        VALUES (#{sid}, #{ip})
+    </insert>
+
+    <!-- 根据sid查询内部服务ip过滤规则 -->
+    <select id="queryAuthInnerRuleIpByPK" parameterType="fun.billon.auth.api.model.AuthInnerRuleIpModel"
+            resultMap="resultAuthInnerRuleIp">
+        SELECT
+        <include refid="authInnerRuleIpMapping"/>
+        FROM auth_inner_rule_ip
+        <where>
+            delete_time IS NULL
+            AND sid = #{sid}
+        </where>
+    </select>
+
+    <!-- 查询字段映射 begin-->
+    <!-- 内部服务ip过滤规则查询字段映射(auth_inner_rule_ip) -->
+    <sql id="authInnerRuleIpMapping">
+        sid,ip,create_time
+    </sql>
+    <!-- 查询字段映射 end-->
+
+    <!-- 查询结果映射begin -->
+    <!-- 内部服务ip过滤规则映射 -->
+    <resultMap id="resultAuthInnerRuleIp" type="fun.billon.auth.api.model.AuthInnerRuleIpModel">
+        <id property="sid" column="sid"/>
+        <result property="ip" column="ip"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <!-- 查询结果映射end -->
+
+</mapper>

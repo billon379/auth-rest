@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 内部服务密钥 -->
+<mapper namespace="fun.billon.auth.dao.IAuthInnerKeyDAO">
+
+    <!-- 新增内部服务密钥 -->
+    <insert id="insertAuthInnerKey" parameterType="fun.billon.auth.api.model.AuthInnerKeyModel">
+        INSERT INTO auth_inner_key(sid, `name`, `desc`, secret)
+        VALUES (#{sid}, #{name}, #{desc}, #{secret})
+    </insert>
+
+    <!-- 根据sid查询内部服务密钥 -->
+    <select id="queryAuthInnerKeyByPK" parameterType="fun.billon.auth.api.model.AuthInnerKeyModel"
+            resultMap="resultAuthInnerKey">
+        SELECT
+        <include refid="authInnerKeyMapping"/>
+        FROM auth_inner_key
+        <where>
+            delete_time IS NULL
+            AND sid = #{sid}
+        </where>
+    </select>
+
+    <!-- 查询字段映射 begin-->
+    <!-- 内部服务密钥查询字段映射(auth_inner_key) -->
+    <sql id="authInnerKeyMapping">
+        sid,`name`,`desc`,secret,create_time
+    </sql>
+    <!-- 查询字段映射 end-->
+
+    <!-- 查询结果映射begin -->
+    <!-- 内部服务密钥映射 -->
+    <resultMap id="resultAuthInnerKey" type="fun.billon.auth.api.model.AuthInnerKeyModel">
+        <id property="sid" column="sid"/>
+        <result property="name" column="name"/>
+        <result property="desc" column="desc"/>
+        <result property="secret" column="secret"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <!-- 查询结果映射end -->
+
+</mapper>
